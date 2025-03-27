@@ -13,7 +13,7 @@ class SyntaxHighlighter:
         TokenType.CHORD_ROOT_NODE_MODIFIER: "#A52A2A",
         TokenType.SUBSCRIPT: "#008B8B",
         TokenType.SUPERSCRIPT: "#C71585",
-        TokenType.CHORD_QUALITY_MODIFIER: "#D32F2F",
+        TokenType.CHORD_QUALITY_MODIFIER: "#FC7F03",
         TokenType.NUMBER: "#FFF35F",
         TokenType.CHORD_COMPONENT_MODIFIER: "#1E90FF",
         TokenType.METRIC_SIGNATURE: "#228B22",
