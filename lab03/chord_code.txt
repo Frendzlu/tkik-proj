@@ -1,5 +1,7 @@
-|  8  <4:4>  N.C.  Gm(7)/D  Gm(7)/D  Gm(7)/D  Gm(7)/D  \  Gm(7)/D  \  
-|  8  N.C.   C(7)  C(7)  Gm(7)/D  C(7)  Edim/B[b]  \  
-|  8  <5:4>  N.C.  F(7)/C  F(7)/Cthis is an error  F(7)/C  Cm(7)  \  F(7)/C  \  F(add8no3no5)  F(add8no3no5)
-|  8  <4:4>  B[b](add8)  B[b](add8)  Cm(7)  F(7)/A  B(add5)/F  \  N.C.  
-|
+|  8  <4:4>  N.C.  Gm(7)/D  Gm(7)/D  Gm(7)/D  Gm(7)/D  \  Gm(7)/D  \  | \ \
+@15; {
+    |  8  N.C.   C(7)  C(7)  Gm(7)/D  C(7)  Edim/B[b]  \  |
+    |  8  <5:4>  N.C.  F(7)/C  F(7)/Cthis is an error  F(7)/C  Cm(7)  \  F(7)/C  \  F(add8no3no5)  F(add8no3no5) |
+} \ 10
+|  8  <4:4>  B[b](add8)  B[b](add8)  Cm(7)  F(7)/A  B(add5)/F  \  N.C.  |
+&15;
