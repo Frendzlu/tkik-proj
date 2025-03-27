@@ -67,7 +67,7 @@ if __name__ == "__main__":
     tokens = get_chord_notation_tokens()
     sc = Scanner(tokens)
 
-    sc.set_text("|  8  <4:4>  N.C.  Gm(7)/D  Gm(7)/D  Gm(7)/D  Gm(7)/D  \  Gm(7)/D  \\ |")
+    sc.set_text("|  8  <4:4>  N.C.  Gm(7)/D  Gm(7)/D  Gm(7)/D  Gm(7)/D  \\  Gm(7)/D  \\ |")
     pprint.pprint(sc.token_dict)
 
     while True:
