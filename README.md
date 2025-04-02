@@ -27,8 +27,8 @@ Just after the denominator may appear the measure duration, with syntax of the f
 - `<subdivision>`
 - \>
 
-# Grammar
-### V
+# Grammar = {Σ, N, S, P}
+### Terminal symbols Σ
 - b, \#
 - m, maj, aug, dim
 - add, no, sus
@@ -39,7 +39,7 @@ Just after the denominator may appear the measure duration, with syntax of the f
 - (, ), <, >
 - :, ;
 - \-, /
-### N
+### Non-terminal symbols N
 - `MeasureKrnl`
 - `Preamble`
 - `MeasureSuffix`
@@ -53,12 +53,28 @@ Just after the denominator may appear the measure duration, with syntax of the f
 - `Digit∅`
 - `JmpSgn`
 - `GroupRepeat`
-### S = `MeasureKrnl`
-### P
+- `Chords`
+- `MultiChord`
+- `Chord`
+- `RootNote`
+- `BaseNote`
+- `RootNoteModifier`
+- `Mode`
+- `Modifiers`
+- `ChordBaseSize`
+- `ComponentModifiers`
+- `Modifier`
+- `ComponentNumber`
+- `Additions`
+- `Suspensions`
+- `Reductions`
+### Starting symbol S = `MeasureKrnl`
+### Productions P
 - `MeasureKrnl` => `MeasureKrnl` `MeasureKrnl` | `MeasureKrnl` `Preamble`(`MeasureKrnl`)`MeasureSuffix` | `Preamble`(`MeasureKrnl`)`MeasureSuffix` 
 - `MeasureKrnl` => |`Subdiv` `MetricSgn` `Chords`|
 - `Subdiv` => `P2Number` | ∅
-- `P2Number` => `Number` // limit to 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256
+- `P2Number` => `Number`
+  - limit `Number` to 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256
 - `Number` => `Digit+` `Number∅`
 - `Number∅`=> `Digit∅` | `Digit∅` `Number∅`
 - `Digit+` => 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
@@ -68,7 +84,6 @@ Just after the denominator may appear the measure duration, with syntax of the f
 - `MeasureSuffix` => `JmpSgn` `MeasureSuffix` | `GroupRepeat` `MeasureSuffix` | ∅
 - `JmpSgn` => &`Number`;
 - `GroupRepeat` => % | % `Number`
-
 - `Chords` => `MultiChord` | `MultiChord` `ChordRepeat∅` `Chords` | `MultiChord` `JmpSgn` `Chords`
 - `ChordRepeat∅` => % | % `ChordRepeat∅` | ∅
 - `MultiChord` => `Chord` | `Chord`-`Chord` | `Chord`/`RootNote` | N.C. | _ 
@@ -78,10 +93,16 @@ Just after the denominator may appear the measure duration, with syntax of the f
 - `RootNoteModifier` => b | #
 - `Mode` => maj | m | dim | aug | ∅
 - `Modifiers` => `ChordBaseSize` `ComponentModifiers` `Additions` `Suspensions` `Reductions`
-- `ChordBaseSize` => `Number` // limit to 7 | 9 | 11 | 13
-- `ComponentModifiers` => `Modifier` `ComponentNumber`
-- `Modifier` => b | #
-- `ComponentNumber` => `Number` // limit to 5 | 6 | 7 | 9 | 11
-- `Additions` => add `Number` | add`Modifier` `Number`// limit to 5 | 8 | 9 | 10 | 11 | 12 | 13 | 14
-- `Suspensions` => sus`Number` // limited to 2 and 4, with error if no 3
-- `Reductions` => no`Number` //limit to 3 and 5
+- `ChordBaseSize` => `Number` 
+  - limit `Number` to 7 | 9 | 11 | 13
+- `ComponentModifiers` => `Modifier` `ComponentNumber` `ComponentModifiers` | ∅
+- `Modifier` => b | # | ∅
+- `ComponentNumber` => `Number`
+  - limit `Number` to 5 | 6 | 7 | 9 | 11
+- `Additions` => add`Modifier``Number` `Additions` | ∅ 
+  - limit `Number` to 5 | 8 | 9 | 10 | 11 | 12 | 13 | 14
+- `Suspensions` => sus`Number`
+  - limit `Number` to 2 and 4
+- `Reductions` => no`Number` `Reductions` | ∅
+  - limit `Number` to 3 and 5
+  - error if `Suspensions` is not ∅
