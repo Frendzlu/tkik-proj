@@ -27,6 +27,8 @@ Just after the denominator may appear the measure duration, with syntax of the f
 - `<subdivision>`
 - \>
 
+Triplets, and other non-measure groups can be defined using a `Chord`*`Number` notation. The multiplication extends or shortens the relative time the chord sounds.
+
 # Grammar = {Σ, N, S, P}
 ### Terminal symbols Σ
 - b, \#
@@ -34,7 +36,7 @@ Just after the denominator may appear the measure duration, with syntax of the f
 - add, no, sus
 - 0-9
 - A, B, C, D, E, F, G
-- _, %, N.C.
+- _, %, N.C., *
 - @, &
 - (, ), <, >
 - :, ;
@@ -68,6 +70,7 @@ Just after the denominator may appear the measure duration, with syntax of the f
 - `Additions`
 - `Suspensions`
 - `Reductions`
+- `TimeExtension`
 ### Starting symbol S = `MeasureKrnl`
 ### Productions P
 - `MeasureKrnl` => `MeasureKrnl` `MeasureKrnl` | `MeasureKrnl` `Preamble`(`MeasureKrnl`)`MeasureSuffix` | `Preamble`(`MeasureKrnl`)`MeasureSuffix` 
@@ -84,9 +87,10 @@ Just after the denominator may appear the measure duration, with syntax of the f
 - `MeasureSuffix` => `JmpSgn` `MeasureSuffix` | `GroupRepeat` `MeasureSuffix` | ∅
 - `JmpSgn` => &`Number`;
 - `GroupRepeat` => % | % `Number`
-- `Chords` => `MultiChord` | `MultiChord` `ChordRepeat∅` `Chords` | `MultiChord` `JmpSgn` `Chords`
+- `Chords` => `MultiChord` `TimeExtension` | `MultiChord` `TimeExtension` `ChordRepeat∅` `Chords` | `TimeExtension` `MultiChord`  `JmpSgn` `Chords`
 - `ChordRepeat∅` => % | % `ChordRepeat∅` | ∅
 - `MultiChord` => `Chord` | `Chord`-`Chord` | `Chord`/`RootNote` | N.C. | _ 
+- `TimeExtension` => *`Number` | ∅
 - `Chord` => `RootNote` `Mode` `Modifiers` |
 - `RootNote` => `BaseNote` `RootNoteModifier` | `BaseNote`
 - `BaseNote` => A | B | C | D | E | F | G
