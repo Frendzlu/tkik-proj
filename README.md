@@ -1,5 +1,5 @@
 # Format description
-**_This is a custom format defined by us_** 
+**_This is a custom format defined by us_**, heavily based on the commonly used [chord notation format](https://en.wikipedia.org/wiki/Chord_notation)
 
 Each measure is delimited by two `|` symbols
 Each measure at it's beginning contains a number (a power of 2) that defines the smallest chord subdivision
