@@ -73,11 +73,11 @@ Triplets, and other non-measure groups can be defined using a `Chord`*`Number` n
 - `TimeExtension`
 ### Starting symbol S = `MeasureKrnl`
 ### Productions P
-- `MeasureKrnl` => `MeasureKrnl` `MeasureKrnl` | `MeasureKrnl` `Preamble`(`MeasureKrnl`)`MeasureSuffix` | `Preamble`(`MeasureKrnl`)`MeasureSuffix` 
+- `MeasureKrnl` => `MeasureKrnl` `MeasureKrnl` | `MeasureKrnl` `Preamble`(`MeasureKrnl`)`MeasureSuffix` | `Preamble`(`MeasureKrnl`)`MeasureSuffix`
 - `MeasureKrnl` => |`Subdiv` `TimeSgn` `Chords`|
 - `Subdiv` => `P2Number` | ∅
 - `P2Number` => `Number`
-  - limit `Number` to 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256
+	- limit `Number` to 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256
 - `Number` => `Digit+` `Number∅`
 - `Number∅`=> `Digit∅` | `Digit∅` `Number∅`
 - `Digit+` => 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
@@ -88,28 +88,28 @@ Triplets, and other non-measure groups can be defined using a `Chord`*`Number` n
 - `JmpSgn` => &`Number`;
 - `GroupRepeat` => % | % `Number`
 - `Chords` => `MultiChord` `TimeExtension` | `MultiChord` `TimeExtension` `ChordRepeat∅` `Chords` | `TimeExtension` `MultiChord`  `JmpSgn` `Chords`
-  - All the `Chords` (with the value of 1), multiplied by their `TimeExtension` (let's name it T) must sum to the time specified in the `TimeSgn` \<N:D>
-  - The formula is: T/`Subdiv` == N/D
+	- All the `Chords` (with the value of 1), multiplied by their `TimeExtension` (let's name it T) must sum to the time specified in the `TimeSgn` \<N:D>
+	- The formula is: T/`Subdiv` == N/D
 - `ChordRepeat∅` => % | % `ChordRepeat∅` | ∅
-- `MultiChord` => `Chord` | `Chord`-`Chord` | `Chord`/`RootNote` | N.C. | _ 
+- `MultiChord` => `Chord` | `Chord`-`Chord` | `Chord`/`RootNote` | N.C. | _
 - `TimeExtension` => *`Number` | ∅
 - `Chord` => `RootNote` `Mode` `Modifiers` |
 - `RootNote` => `BaseNote` `RootNoteModifier` | `BaseNote`
 - `BaseNote` => A | B | C | D | E | F | G
 - `RootNoteModifier` => b | #
 - `Mode` => maj | m | dim | aug | ∅
-  - error if preceding `RootNote` has a `RootNoteModifier`, the "maj" `Mode` specifier is absent and `Modifiers` has a `ChordBaseSize` or `ComponentModifiers` specifier present
+	- error if preceding `RootNote` has a `RootNoteModifier`, the "maj" `Mode` specifier is absent and `Modifiers` has a `ChordBaseSize` or `ComponentModifiers` specifier present
 - `Modifiers` => `ChordBaseSize` `ComponentModifiers` `Additions` `Suspensions` `Reductions`
-- `ChordBaseSize` => `Number` 
-  - limit `Number` to 7 | 9 | 11 | 13
+- `ChordBaseSize` => `Number`
+	- limit `Number` to 7 | 9 | 11 | 13
 - `ComponentModifiers` => `Modifier` `ComponentNumber` `ComponentModifiers` | ∅
 - `Modifier` => b | # | ∅
 - `ComponentNumber` => `Number`
-  - limit `Number` to 5 | 6 | 7 | 9 | 11
-- `Additions` => add`Modifier``Number` `Additions` | ∅ 
-  - limit `Number` to 5 | 8 | 9 | 10 | 11 | 12 | 13 | 14
+	- limit `Number` to 5 | 6 | 7 | 9 | 11
+- `Additions` => add`Modifier``Number` `Additions` | ∅
+	- limit `Number` to 5 | 8 | 9 | 10 | 11 | 12 | 13 | 14
 - `Suspensions` => sus`Number`
-  - limit `Number` to 2 and 4
+	- limit `Number` to 2 and 4
 - `Reductions` => no`Number` `Reductions` | ∅
-  - limit `Number` to 3 and 5
-  - error if `Suspensions` is not ∅
+	- limit `Number` to 3 and 5
+	- error if `Suspensions` is not ∅

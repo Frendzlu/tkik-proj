@@ -1,1 +1,2 @@
-pysinewave~=0.0.7
+PyGame
+numpy
