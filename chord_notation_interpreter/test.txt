@@ -1,0 +1,4 @@
+|  8  <4:4>  N.C.  Gm7/D  %  %  %  _  Gm7/D  _  |
+|  8  N.C.   C7  %  Gm7/D  C7  Edim/Bb  _  |
+|  8  N.C.  F7/C  % %  Cm7  _  F7/C  _  Fadd8no3no5  % |
+|  8  Bbadd8  %  Cm7  F7/A  Badd5/F  _  N.C.  |
