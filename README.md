@@ -1,7 +1,7 @@
 # Format description
 **_This is a custom format defined by us_**, heavily based on the commonly used [chord notation format](https://en.wikipedia.org/wiki/Chord_notation)
 
-Each measure is delimited by two `|` symbols
+Each measure is delimited by two `|` symbols (one from each side)
 Each measure at it's beginning contains a number (a power of 2) that defines the smallest chord subdivision
 The symbol `%` denotes the repetition of the chord, **OR**, if it's after a measure, the whole measure.
 The measures can be grouped using `(` and `)`, and the groups can also be repeated using the `%` symbol
