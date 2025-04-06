@@ -1,30 +1,24 @@
-start: measure_krnl
+start: measure* measure_group* measure*
 
-measure_krnl: measure_krnl measure_krnl
-            | measure_krnl? preamble LPAR measure_krnl RPAR measure_suffix
-            | PIPE subdiv? time_sgn? chords PIPE measure_suffix
+measure_group: preamble? LPAR measure* measure_group* measure* RPAR measure_suffix?
+
+measure: preamble? PIPE subdiv? time_sgn? chords PIPE measure_suffix?
 
 subdiv: p2_number
 time_sgn: LT number COLON p2_number GT
 preamble: AT number SEMI
-measure_suffix: (jmp_sgn | group_repeat)*
+measure_suffix: (jmp_sgn | group_repeat)+
 
 jmp_sgn: AMP number SEMI
 
 group_repeat: PERCENT number?
 
-chords: multi_chord time_extension? chord_repeat_opt? chords?
-      | time_extension? multi_chord jmp_sgn chords?
+chords: (multi_chord)+
 
-chord_repeat_opt: PERCENT
-                | PERCENT chord_repeat_opt
-                |
+hold_chord: UNDERSCORE
+			| UNDERSCORE hold_chord
 
-multi_chord: chord
-           | chord DASH chord
-           | chord SLASH root_note
-           | NC
-           | UNDERSCORE
+multi_chord: (chord | chord DASH chord | chord SLASH root_note | NC) time_extension? hold_chord? | PERCENT hold_chord?
 
 time_extension: STAR number
 

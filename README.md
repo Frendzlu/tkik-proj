@@ -71,9 +71,10 @@ Triplets, and other non-measure groups can be defined using a `Chord`*`Number` n
 - `Suspensions`
 - `Reductions`
 - `TimeExtension`
+- `HoldChord∅`
 ### Starting symbol S = `MeasureKrnl`
 ### Productions P
-- `MeasureKrnl` => `MeasureKrnl` `MeasureKrnl` | `MeasureKrnl` `Preamble`(`MeasureKrnl`)`MeasureSuffix` | `Preamble`(`MeasureKrnl`)`MeasureSuffix`
+- `MeasureKrnl` => `MeasureKrnl` `MeasureKrnl` | `MeasureKrnl` `Preamble`(`MeasureKrnl`)`MeasureSuffix` | `Preamble`(`MeasureKrnl`)`MeasureSuffix` | `Preamble` `MeasureKrnl` `MeasureSuffix`
 - `MeasureKrnl` => |`Subdiv` `TimeSgn` `Chords`|
 - `Subdiv` => `P2Number` | ∅
 - `P2Number` => `Number`
@@ -87,11 +88,11 @@ Triplets, and other non-measure groups can be defined using a `Chord`*`Number` n
 - `MeasureSuffix` => `JmpSgn` `MeasureSuffix` | `GroupRepeat` `MeasureSuffix` | ∅
 - `JmpSgn` => &`Number`;
 - `GroupRepeat` => % | % `Number`
-- `Chords` => `MultiChord` `TimeExtension` | `MultiChord` `TimeExtension` `ChordRepeat∅` `Chords` | `TimeExtension` `MultiChord`  `JmpSgn` `Chords`
-	- All the `Chords` (with the value of 1), multiplied by their `TimeExtension` (let's name it T) must sum to the time specified in the `TimeSgn` \<N:D>
-	- The formula is: T/`Subdiv` == N/D
-- `ChordRepeat∅` => % | % `ChordRepeat∅` | ∅
-- `MultiChord` => `Chord` | `Chord`-`Chord` | `Chord`/`RootNote` | N.C. | _
+- `Chords` => `MultiChord` | `MultiChord` `Chords`
+- `MultiChord` => `Chord` `TimeExtension` `HoldChord∅` | `Chord`-`Chord` `TimeExtension` `HoldChord∅` | `Chord`/`RootNote` `TimeExtension` `HoldChord∅` | N.C. `TimeExtension` `HoldChord∅` | % `HoldChord∅`
+  - All the `Chords` (with the value of 1), multiplied by their `TimeExtension` (let's name it T) must sum to the time specified in the `TimeSgn` \<N:D>
+  - The formula is: T/`Subdiv` == N/D
+- `HoldChord∅` => _ | _ `HoldChord∅` | _
 - `TimeExtension` => *`Number` | ∅
 - `Chord` => `RootNote` `Mode` `Modifiers` |
 - `RootNote` => `BaseNote` `RootNoteModifier` | `BaseNote`
