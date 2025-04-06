@@ -50,10 +50,9 @@ reductions: NO ("3" | "5")
 
 p2_number: number     // restrict values to powers of 2 (1–256) in code
 
-number: DIGIT_NONZERO DIGIT*
+number: NUMBER
 
-DIGIT_NONZERO: /[1-9]/
-DIGIT: /[0-9]/
+NUMBER: /[0-9]//[1-9]/*
 SLASH: "/"
 DASH: "-"
 STAR: "*"
