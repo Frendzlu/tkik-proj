@@ -2,6 +2,7 @@ import math
 
 from playback.Instrument import Instrument
 from playback.NToneTemperament import NToneTemperament
+from playback.SoundPlayer import SoundPlayer
 
 tet12 = NToneTemperament(n=12, freq=440)
 cmaj = tet12.frequencies([-21, -9, -5, -2])
@@ -27,14 +28,17 @@ fmaj6_sound = inst.sound_from_frequencies(fmaj6, 0.5)
 gmaj64_sound = inst.sound_from_frequencies(gmaj64, 1)
 gmaj53_sound = inst.sound_from_frequencies(gmaj53, 1)
 cmajno5_sound = inst.sound_from_frequencies(cmajno5, 2)
-
-cmaj_sound.play()
-fmaj_sound.play()
-gmaj8_sound.play()
-gmaj7_sound.play()
-am_sound.play()
-fmaj8_sound.play()
-fmaj6_sound.play()
-gmaj64_sound.play()
-gmaj53_sound.play()
-cmajno5_sound.play()
+print("what")
+player = SoundPlayer(16, 44100)
+player.play([
+	cmaj_sound,
+	fmaj_sound,
+	gmaj8_sound,
+	gmaj7_sound,
+	am_sound,
+	fmaj8_sound,
+	fmaj6_sound,
+	gmaj64_sound,
+	gmaj53_sound,
+	cmajno5_sound,
+], inst)
