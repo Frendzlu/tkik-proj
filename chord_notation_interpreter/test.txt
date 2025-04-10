@@ -12,4 +12,4 @@
     |  8  Bbadd8-C  %  Cm7  F7/A  Badd5/F  _  N.C.  |
 ) % 12
 &15;
-|  8  Bbadd8-C  %  Cm7  F7/A  Badd5/F  _  N.C.  |
+|  8  Bbadd8-C  %  Cm7  F7/A  Badd5/F  _  Bbb7 Bb7 |
