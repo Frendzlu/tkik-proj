@@ -1,3 +1,5 @@
+import random
+
 import numpy as np
 import concurrent.futures
 
@@ -7,34 +9,52 @@ from playback.NToneTemperament import NToneTemperament
 from playback.SoundPlayer import SoundPlayer
 
 
-def inst2(amp, t, freq):
+def flute(amp, t, freq):
 	harmonics = [
-        1.0,
-        1.0,
-        0.1,
-        0.2,
-        0.15,
-        0.05,
-        0.025,
-        0.025
-    ]
+		[1, 2],
+		[0.9, 3],
+		[0.5, 4],
+		[0.4, 5],
+		[0.4, 6],
+		[0.3, 7],
+		[0.2, 8],
+		[0.1, 9],
+	]
 	res = np.zeros_like(t, dtype=np.float32)
-	for i, w in enumerate(harmonics, start=1):
-		res += w * np.sin(2 * np.pi * freq * i * t) 
+	for i in range(len(harmonics)):
+		harmonics.append([
+			harmonics[i][0],
+			harmonics[i][1] + ((random.random() - 0.5) / 67)
+		])
+		harmonics.append([
+			harmonics[i][0],
+			harmonics[i][1] + ((random.random() - 0.5) / 156)
+		])
+		harmonics.append([
+			harmonics[i][0],
+			harmonics[i][1] + ((random.random() - 0.5) / 49)
+		])
 
-	res = amp * res / sum(harmonics)
+	w_sum = 0
+	for [w, m] in harmonics:
+		# print(w, m)
+		res += w * np.sin(2 * np.pi * freq * m * t)
+		w_sum += w
+
+
+	res = amp * res / w_sum
 	return np.round(res).astype(np.int16)
 
 
 def generate_sound(chords_and_sound_fn):
 	freq, duration = chords_and_sound_fn[0]
 	sound_fn = chords_and_sound_fn[1]
-	inst = Instrument(sound_fn)
-	return inst.sound_from_frequencies(freq, duration)
+	return Instrument(sound_fn).sound_from_frequencies(freq, duration)
 
 
 if __name__ == '__main__':
-	tet12 = NToneTemperament(n=12, freq=420)
+	tet12 = NToneTemperament(n=12, freq=420, ratio=2)
+	high_c = tet12.frequencies(3)
 	cmaj = tet12.frequencies([-21, -9, -5, -2])
 	fmaj = tet12.frequencies([-16, -9, -4, 0])
 	gmaj8 = tet12.frequencies([-14, -10, -7, -2])
@@ -46,10 +66,10 @@ if __name__ == '__main__':
 	gmaj53 = tet12.frequencies([-26, -16, -10, -7])
 	cmajno5 = tet12.frequencies([-21, -17, -9, -9])
 
-	inst = Instrument(inst2)
+	inst = Instrument(flute)
 	sound_from_freq_time = time()
 	chords = [
-		(cmaj, 1),
+		(high_c, 5),
 		(fmaj, 1),
 		(gmaj8, 0.5),
 		(gmaj7, 0.5),
@@ -65,8 +85,8 @@ if __name__ == '__main__':
 		# args =  [(chord, inst2) for chord in chords]
 		# results = list(executor.map(generate_sound, args))
 
-	args =  [(chord, inst2) for chord in chords]
+	args =  [(chord, flute) for chord in chords]
 	results = list(map(generate_sound, args))
 	print(f"sound from frequencies init time: {time()-sound_from_freq_time}")
-	player = SoundPlayer(16, 44100)
+	player = SoundPlayer(32, 48000)
 	player.play(results, inst)
