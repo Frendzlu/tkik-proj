@@ -18,7 +18,13 @@ chords: (multi_chord)+
 hold_chord: UNDERSCORE
 			| UNDERSCORE hold_chord
 
-multi_chord: (chord | chord DASH chord | chord SLASH root_note | NC) time_extension? hold_chord? | PERCENT hold_chord?
+multi_chord: (chord | chord_over_chord | slash_chord | no_chord) time_extension? hold_chord? | PERCENT hold_chord?
+
+chord_over_chord: chord DASH chord
+
+no_chord: NC
+
+slash_chord: chord SLASH root_note
 
 time_extension: STAR number
 
