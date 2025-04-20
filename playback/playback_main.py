@@ -4,46 +4,11 @@ import numpy as np
 import concurrent.futures
 
 from time import time
+
+from chord_notation_interpreter.Instruments import Instruments
 from playback.Instrument import Instrument
 from playback.NToneTemperament import NToneTemperament
 from playback.SoundPlayer import SoundPlayer
-
-
-def flute(amp, t, freq):
-	harmonics = [
-		[1, 2],
-		[0.9, 3],
-		[0.5, 4],
-		[0.4, 5],
-		[0.4, 6],
-		[0.3, 7],
-		[0.2, 8],
-		[0.1, 9],
-	]
-	res = np.zeros_like(t, dtype=np.float32)
-	for i in range(len(harmonics)):
-		harmonics.append([
-			harmonics[i][0],
-			harmonics[i][1] + ((random.random() - 0.5) / 67)
-		])
-		harmonics.append([
-			harmonics[i][0],
-			harmonics[i][1] + ((random.random() - 0.5) / 156)
-		])
-		harmonics.append([
-			harmonics[i][0],
-			harmonics[i][1] + ((random.random() - 0.5) / 49)
-		])
-
-	w_sum = 0
-	for [w, m] in harmonics:
-		# print(w, m)
-		res += w * np.sin(2 * np.pi * freq * m * t)
-		w_sum += w
-
-
-	res = amp * res / w_sum
-	return np.round(res).astype(np.int16)
 
 
 def generate_sound(chords_and_sound_fn):
@@ -53,23 +18,24 @@ def generate_sound(chords_and_sound_fn):
 
 
 if __name__ == '__main__':
-	tet12 = NToneTemperament(n=12, freq=420, ratio=2)
-	high_c = tet12.frequencies(3)
-	cmaj = tet12.frequencies([-21, -9, -5, -2])
-	fmaj = tet12.frequencies([-16, -9, -4, 0])
-	gmaj8 = tet12.frequencies([-14, -10, -7, -2])
-	gmaj7 = tet12.frequencies([-14, -10, -7, -4])
-	am = tet12.frequencies([-12, -9, -9, -5])
-	fmaj8 = tet12.frequencies([-16, -12, -9, -4])
-	fmaj6 = tet12.frequencies([-16, -12, -9, -7])
-	gmaj64 = tet12.frequencies([-14, -14, -9, -5])
-	gmaj53 = tet12.frequencies([-26, -16, -10, -7])
-	cmajno5 = tet12.frequencies([-21, -17, -9, -9])
+	tet12 = NToneTemperament(n=12, freq=440, ratio=2)
+	aa = tet12.frequencies([-24, 0], 0)
+	print(aa.frequencies)
+	cmaj = tet12.frequencies([-21, -9, -5, -2], -21)
+	fmaj = tet12.frequencies([-16, -9, -4, 0], -16)
+	gmaj8 = tet12.frequencies([-14, -10, -7, -2], -14)
+	gmaj7 = tet12.frequencies([-14, -10, -7, -4], -14)
+	am = tet12.frequencies([-12, -9, -9, -5], -12)
+	fmaj8 = tet12.frequencies([-16, -12, -9, -4], -16)
+	fmaj6 = tet12.frequencies([-16, -12, -9, -7], -16)
+	gmaj64 = tet12.frequencies([-14, -14, -9, -5], -14)
+	gmaj53 = tet12.frequencies([-26, -16, -10, -7], -14)
+	cmajno5 = tet12.frequencies([-21, -17, -9, -9], -21)
 
-	inst = Instrument(flute)
+	inst = Instrument(Instruments.default)
 	sound_from_freq_time = time()
 	chords = [
-		(high_c, 5),
+		(cmaj, 1),
 		(fmaj, 1),
 		(gmaj8, 0.5),
 		(gmaj7, 0.5),
@@ -85,8 +51,9 @@ if __name__ == '__main__':
 		# args =  [(chord, inst2) for chord in chords]
 		# results = list(executor.map(generate_sound, args))
 
-	args =  [(chord, flute) for chord in chords]
+	args =  [(chord, Instruments.default) for chord in chords]
 	results = list(map(generate_sound, args))
 	print(f"sound from frequencies init time: {time()-sound_from_freq_time}")
 	player = SoundPlayer(32, 48000)
 	player.play(results, inst)
+

@@ -33,13 +33,16 @@ class Instrument:
 		new_buffer = np.stack(buffers)
 		return np.mean(new_buffer, axis=0).astype(np.dtype(f"i{int(self.bits/8)}"))
 
-	def sound_from_frequencies(self, frequencies, duration, runtime=[0]):
+	def sound_from_frequencies(self, ntt_fgroup, duration, runtime=[0]):
 		start = time()
 		num_samples = int(round(duration * self.sample_rate))
+
+		frequencies = ntt_fgroup.frequencies
+
 		if type(frequencies) == list:
 			buffers = []
 			for freq in frequencies:
-				if type(freq) in [int, float]:
+				if type(freq) in [int, float, np.int8, np.float64]:
 					buffers.append(self.make_buf(num_samples, self.amplitude, freq))
 				else:
 					raise TypeError("Frequency should be a number or a list of numbers")
@@ -48,7 +51,7 @@ class Instrument:
 			print(f"runtime: {runtime}  |  current sound: {time()-start}")
 			return Sound(self.unite_buffers(buffers), self.bits, self.sample_rate, duration)
 
-		elif type(frequencies) in [int, float]:
+		elif type(frequencies) in [int, float, np.int8]:
 			runtime[0] += time()-start
 			print(f"runtime: {runtime}  |  current sound: {time()-start}")
 			return Sound(self.unite_buffers([self.make_buf(num_samples, self.amplitude, frequencies)]),

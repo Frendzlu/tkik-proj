@@ -11,4 +11,7 @@ if __name__ == "__main__":
 
     # abstract syntax tree
     ast = ccp.parse(chord_code)
-    print(ast.pretty())
+    for tree in ast.children:
+        print(f"\n\n=============== {tree.data} ================")
+        print(tree.pretty())
+    # print(ast.pretty())
