@@ -1,116 +1,136 @@
-# Format description
-**_This is a custom format defined by us_**, heavily based on the commonly used [chord notation format](https://en.wikipedia.org/wiki/Chord_notation)
+# 🎼 Custom Chord Format Interpreter
 
-Each measure is delimited by two `|` symbols (one from each side)
-Each measure at it's beginning contains a number (a power of 2) that defines the smallest chord subdivision
-The symbol `%` denotes the repetition of the chord, **OR**, if it's after a measure, the whole measure.
-The measures can be grouped using `(` and `)`, and the groups can also be repeated using the `%` symbol
-The following repetition notations are equivalent:
-- `% 3`
-- `%%%`
+## 👤 Authors  
+- **Name**: Krzysztof Piątek  
+- **Email**: piatek@student.agh.edu.pl  
+- **Name**: Mateusz Francik  
+- **Email**: kiedys_tu_bedzie@mail.mateusza.oby 
 
-Note that the former may only be used outside the measure.
+## 📌 Project Topic  
+**Interpreter for a Custom Music Notation Format** — a parser and playback engine for a domain-specific language representing chord progressions, built to facilitate music experimentation, composition, and live performance.
 
-Segno's and codas can also be defined using numbered labels (`@`, a number and the delimiter `;`).
+## 🎯 Project Assumptions
 
-The _dal segno al coda_ can be simulated using the jump signature (`&`, a number and the delimiter `;`).
-If no number is provided, the jump is considered to be to the beginning of the file.
+### General Goals  
+The project aims to build a tool that can interpret a custom-designed music notation language and **play back** the described chord progressions using generated audio. The notation allows detailed timing, chord structure, and repetition schemes that go beyond traditional lead sheet formats.
 
-**All jump commands only work once, and if in a repetition, _only_ at the last repetition**
+### Type of Translator  
+**Interpreter** — the program reads and immediately acts on the custom music format, producing sound as output.
 
-Each measure has a number at its beginning that denotes the smallest division of measure. If the number is absent, a 4 is assumed.
+### Expected Output  
+- Live or rendered **audio playback** of the input chord progression.
 
-Just after the denominator may appear the measure duration, with syntax of the form
-- <
-- `<number>` - the amount of `<subdivision>` in the measure
-- :
-- `<subdivision>`
-- \>
+### Language of Implementation  
+**Python**
 
-Triplets, and other non-measure groups can be defined using a `Chord`*`Number` notation. The multiplication extends or shortens the relative time the chord sounds.
+### Scanner/Parser Implementation  
+- Built using **Lark**, a modern parsing library for Python that supports context-free grammars.
+- Grammar is defined in Lark's EBNF-style format.
 
-# Grammar = {Σ, N, S, P}
-### Terminal symbols Σ
-- b, \#
-- m, maj, aug, dim
-- add, no, sus
-- 0-9
-- A, B, C, D, E, F, G
-- _, %, N.C., *
-- @, &
-- (, ), <, >
-- :, ;
-- \-, /
-### Non-terminal symbols N
-- `MeasureKrnl`
-- `Preamble`
-- `MeasureSuffix`
-- `Subdiv`
-- `TimeSgn`
-- `Chords`
-- `P2Number`
-- `Number`
-- `Number∅`
-- `Digit+`
-- `Digit∅`
-- `JmpSgn`
-- `GroupRepeat`
-- `Chords`
-- `MultiChord`
-- `Chord`
-- `RootNote`
-- `BaseNote`
-- `RootNoteModifier`
-- `Mode`
-- `Modifiers`
-- `ChordBaseSize`
-- `ComponentModifiers`
-- `Modifier`
-- `ComponentNumber`
-- `Additions`
-- `Suspensions`
-- `Reductions`
-- `TimeExtension`
-- `HoldChord∅`
-### Starting symbol S = `MeasureKrnl`
-### Productions P
-- `MeasureKrnl` => `MeasureKrnl` `MeasureKrnl` | `MeasureKrnl` `Preamble`(`MeasureKrnl`)`MeasureSuffix` | `Preamble`(`MeasureKrnl`)`MeasureSuffix` | `Preamble` `MeasureKrnl` `MeasureSuffix`
-- `MeasureKrnl` => |`Subdiv` `TimeSgn` `Chords`|
-- `Subdiv` => `P2Number` | ∅
-- `P2Number` => `Number`
-	- limit `Number` to 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256
-- `Number` => `Digit+` `Number∅`
-- `Number∅`=> `Digit∅` | `Digit∅` `Number∅`
-- `Digit+` => 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-- `Digit∅`=> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | ∅
-- `TimeSgn` => <`Number`:`P2Number`> | ∅
-- `Preamble` => @`Number`; | ∅
-- `MeasureSuffix` => `JmpSgn` `MeasureSuffix` | `GroupRepeat` `MeasureSuffix` | ∅
-- `JmpSgn` => &`Number`;
-- `GroupRepeat` => % | % `Number`
-- `Chords` => `MultiChord` | `MultiChord` `Chords`
-- `MultiChord` => `Chord` `TimeExtension` `HoldChord∅` | `Chord`-`Chord` `TimeExtension` `HoldChord∅` | `Chord`/`RootNote` `TimeExtension` `HoldChord∅` | N.C. `TimeExtension` `HoldChord∅` | % `HoldChord∅`
-  - All the `Chords` (with the value of 1), multiplied by their `TimeExtension` (let's name it T) must sum to the time specified in the `TimeSgn` \<N:D>
-  - The formula is: T/`Subdiv` == N/D
-- `HoldChord∅` => _ | _ `HoldChord∅` | _
-- `TimeExtension` => *`Number` | ∅
-- `Chord` => `RootNote` `Mode` `Modifiers` |
-- `RootNote` => `BaseNote` `RootNoteModifier` | `BaseNote`
-- `BaseNote` => A | B | C | D | E | F | G
-- `RootNoteModifier` => b | #
-- `Mode` => maj | m | dim | aug | ∅
-	- error if preceding `RootNote` has a `RootNoteModifier`, the "maj" `Mode` specifier is absent and `Modifiers` has a `ChordBaseSize` or `ComponentModifiers` specifier present
-- `Modifiers` => `ChordBaseSize` `ComponentModifiers` `Additions` `Suspensions` `Reductions`
-- `ChordBaseSize` => `Number`
-	- limit `Number` to 7 | 9 | 11 | 13
-- `ComponentModifiers` => `Modifier` `ComponentNumber` `ComponentModifiers` | ∅
-- `Modifier` => b | # | ∅
-- `ComponentNumber` => `Number`
-	- limit `Number` to 5 | 6 | 7 | 9 | 11
-- `Additions` => add`Modifier` `Number` `Additions` | ∅
-	- limit `Number` to 5 | 8 | 9 | 10 | 11 | 12 | 13 | 14
-- `Suspensions` => sus`Number`
-	- limit `Number` to 2 and 4
-- `Reductions` => no`Number` `Reductions` | ∅
-	- limit `Number` to 3 and 5
-	- error if `Suspensions` is not ∅
+---
+
+## 🔠 Tokens
+
+The following tokens are defined in the lexer portion of the Lark grammar:
+
+| Token Name    | Description                                  |
+|---------------|----------------------------------------------|
+| `NUMBER`      | Numeric value (used in time, chords, etc.)   |
+| `SLASH (/)`   | Slash chords notation (e.g., C/E)            |
+| `DASH (-)`    | Chord over chord (e.g., C-E)                 |
+| `STAR (*)`    | Duration modifier                            |
+| `AMP (&)`     | Jump signal                                  |
+| `PERCENT (%)` | Repeats indicator                            |
+| `HASH (#)`    | Sharp                                        |
+| `FLAT (b)`    | Flat                                         |
+| `LT (<)`      | Time signature open                          |
+| `GT (>)`      | Time signature close                         |
+| `LPAR, RPAR`  | Parentheses for grouping (they are both different tokens)|
+| `PIPE (\|)`    | Measure boundary                             |
+| `SEMI (;)`    | End of label or jump                         |
+| `AT (@)`      | Measure label                                |
+| `COLON (:)`   | Used in time signature                       |
+| `UNDERSCORE`  | Chord hold                                   |
+| `NC`          | No chord                                     |
+| `MODE`        | Chord mode: `maj`, `m`, `dim`, `aug`         |
+| `ADD`         | Addition to chords                           |
+| `NO`          | Reduction/removal from chords                |
+| `SUS`         | Suspension notation                          |
+| `NOTES`       | Musical notes: A–G                           |
+
+
+# WARNING
+GRAMMAR IS NOT YET LALR COMPATIBLE - WORK IN PROGRESS
+
+## 📚 Grammar (Lark EBNF)
+
+```lark
+start: measure* measure_group* measure*
+
+measure_group: preamble? LPAR measure* measure_group* measure* RPAR measure_suffix?
+
+measure: preamble? PIPE subdiv? time_sgn? chords PIPE measure_suffix?
+
+subdiv: p2_number
+time_sgn: LT number COLON p2_number GT
+preamble: AT number SEMI
+measure_suffix: (jmp_sgn | group_repeat)+
+
+jmp_sgn: AMP number SEMI
+group_repeat: PERCENT number?
+
+chords: (multi_chord)+
+
+hold_chord: UNDERSCORE | UNDERSCORE hold_chord
+
+multi_chord: (chord | chord_over_chord | slash_chord | no_chord) time_extension? hold_chord? | PERCENT hold_chord?
+
+chord_over_chord: chord DASH chord
+no_chord: NC
+slash_chord: chord SLASH root_note
+
+time_extension: STAR number
+chord: root_note mode? modifiers*
+
+root_note: base_note root_note_modifier?
+base_note: NOTES
+root_note_modifier: FLAT | HASH
+
+mode: MODE
+modifiers: chord_base_size? component_modifiers? additions? suspensions? reductions?
+
+chord_base_size: number
+component_modifiers: (modifier? component_number)+
+modifier: FLAT | HASH
+component_number: number
+
+additions: ADD modifier? number+
+suspensions: SUS ("2" | "4")
+reductions: NO ("3" | "5")
+
+p2_number: number
+number: NUMBER
+
+NUMBER: /[0-9]//[1-9]/*
+SLASH: "/"
+DASH: "-"
+STAR: "*"
+AMP: "&"
+PERCENT: "%"
+HASH: "#"
+FLAT: "b"
+LT: "<"
+GT: ">"
+LPAR: "("
+RPAR: ")"
+PIPE: "|"
+SEMI: ";"
+AT: "@"
+COLON: ":"
+UNDERSCORE: "_"
+NC: "N.C."
+MODE: "maj" | "m" | "dim" | "aug"
+ADD: "add"
+NO: "no"
+SUS: "sus"
+NOTES: "A" | "B" | "C" | "D" | "E" | "F" | "G"
