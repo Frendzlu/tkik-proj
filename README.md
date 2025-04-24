@@ -4,7 +4,7 @@
 - **Name**: Krzysztof Piątek  
 - **Email**: piatek@student.agh.edu.pl  
 - **Name**: Mateusz Francik  
-- **Email**: kiedys_tu_bedzie@mail.mateusza.oby 
+- **Email**: mfrancik@student.agh.edu.pl
 
 ## 📌 Project Topic  
 **Interpreter for a Custom Music Notation Format** — a parser and playback engine for a domain-specific language representing chord progressions, built to facilitate music experimentation, composition, and live performance.
