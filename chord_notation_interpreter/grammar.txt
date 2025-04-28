@@ -1,6 +1,6 @@
-start: measure* measure_group* measure*
+start: measure* measure_group+ measure* | measure*
 
-measure_group: preamble? LPAR measure* measure_group* measure* RPAR measure_suffix?
+measure_group: preamble? LPAR (measure+ measure_group+ measure* | measure* measure_group+ measure+ | measure+) RPAR measure_suffix?
 
 measure: preamble? PIPE subdiv? time_sgn? chords PIPE measure_suffix?
 
@@ -28,7 +28,11 @@ slash_chord: chord SLASH root_note
 
 time_extension: STAR number
 
-chord: root_note mode? modifiers*
+chord: root_note (mode modifiers_no_base_size_comp | mode modifiers_base_size | mode? modifiers_add_plus)
+
+modifiers_add_plus: additions? suspensions? reductions?
+modifiers_no_base_size_comp: component_modifiers additions? suspensions? reductions?
+modifiers_base_size: chord_base_size component_modifiers? additions? suspensions? reductions?
 
 root_note: base_note root_note_modifier?
 
@@ -38,11 +42,9 @@ root_note_modifier: FLAT | HASH
 
 mode: MODE
 
-modifiers: chord_base_size? component_modifiers? additions? suspensions? reductions?
-
 chord_base_size: number  // restricted to: 7, 9, 11, 13 (enforce in code)
 
-component_modifiers: (modifier? component_number)+
+component_modifiers: (modifier component_number)+
 
 modifier: FLAT | HASH
 
