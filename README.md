@@ -59,15 +59,13 @@ The following tokens are defined in the lexer portion of the Lark grammar:
 | `NOTES`       | Musical notes: A–G                           |
 
 
-# WARNING
-GRAMMAR IS NOT YET LALR COMPATIBLE - WORK IN PROGRESS
 
 ## 📚 Grammar (Lark EBNF)
 
 ```lark
-start: measure* measure_group* measure*
+start: measure* measure_group+ measure* | measure*
 
-measure_group: preamble? LPAR measure* measure_group* measure* RPAR measure_suffix?
+measure_group: preamble? LPAR (measure+ measure_group+ measure* | measure* measure_group+ measure+ | measure+) RPAR measure_suffix?
 
 measure: preamble? PIPE subdiv? time_sgn? chords PIPE measure_suffix?
 
@@ -77,60 +75,52 @@ preamble: AT number SEMI
 measure_suffix: (jmp_sgn | group_repeat)+
 
 jmp_sgn: AMP number SEMI
+
 group_repeat: PERCENT number?
 
 chords: (multi_chord)+
 
-hold_chord: UNDERSCORE | UNDERSCORE hold_chord
+hold_chord: UNDERSCORE
+			| UNDERSCORE hold_chord
 
 multi_chord: (chord | chord_over_chord | slash_chord | no_chord) time_extension? hold_chord? | PERCENT hold_chord?
 
 chord_over_chord: chord DASH chord
+
 no_chord: NC
+
 slash_chord: chord SLASH root_note
 
 time_extension: STAR number
-chord: root_note mode? modifiers*
+
+chord: root_note (mode modifiers_no_base_size_comp | mode modifiers_base_size | mode? modifiers_add_plus)
+modifiers_add_plus: additions? suspensions? reductions?
+modifiers_no_base_size_comp: component_modifiers additions? suspensions? reductions?
+modifiers_base_size: chord_base_size component_modifiers? additions? suspensions? reductions?
 
 root_note: base_note root_note_modifier?
+
 base_note: NOTES
+
 root_note_modifier: FLAT | HASH
 
 mode: MODE
-modifiers: chord_base_size? component_modifiers? additions? suspensions? reductions?
 
-chord_base_size: number
-component_modifiers: (modifier? component_number)+
+chord_base_size: number  // restricted to: 7, 9, 11, 13 (enforce in code)
+
+component_modifiers: (modifier component_number)+
+
 modifier: FLAT | HASH
-component_number: number
+
+component_number: number  // restricted to: 5, 6, 7, 9, 11
 
 additions: ADD modifier? number+
+
 suspensions: SUS ("2" | "4")
+
 reductions: NO ("3" | "5")
 
-p2_number: number
-number: NUMBER
+p2_number: number     // restrict values to powers of 2 (1–256) in code
 
-NUMBER: /[0-9]//[1-9]/*
-SLASH: "/"
-DASH: "-"
-STAR: "*"
-AMP: "&"
-PERCENT: "%"
-HASH: "#"
-FLAT: "b"
-LT: "<"
-GT: ">"
-LPAR: "("
-RPAR: ")"
-PIPE: "|"
-SEMI: ";"
-AT: "@"
-COLON: ":"
-UNDERSCORE: "_"
-NC: "N.C."
-MODE: "maj" | "m" | "dim" | "aug"
-ADD: "add"
-NO: "no"
-SUS: "sus"
-NOTES: "A" | "B" | "C" | "D" | "E" | "F" | "G"
+number: NUMBER
+```

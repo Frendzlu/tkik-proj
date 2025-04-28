@@ -29,7 +29,6 @@ slash_chord: chord SLASH root_note
 time_extension: STAR number
 
 chord: root_note (mode modifiers_no_base_size_comp | mode modifiers_base_size | mode? modifiers_add_plus)
-
 modifiers_add_plus: additions? suspensions? reductions?
 modifiers_no_base_size_comp: component_modifiers additions? suspensions? reductions?
 modifiers_base_size: chord_base_size component_modifiers? additions? suspensions? reductions?
