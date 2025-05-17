@@ -1,0 +1,1 @@
+handle_dragbar(UI.vertical_dragbar)
