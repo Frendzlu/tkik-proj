@@ -15,10 +15,8 @@ group_repeat: PERCENT number?
 
 chords: (multi_chord)+
 
-hold_chord: UNDERSCORE
-			| UNDERSCORE hold_chord
-
-multi_chord: (chord | chord_over_chord | slash_chord | no_chord) time_extension? hold_chord? | PERCENT hold_chord?
+multi_chord: (chord | chord_over_chord | slash_chord | no_chord | PERCENT) duration
+duration: time_extension? UNDERSCORE*
 
 chord_over_chord: chord DASH chord
 
@@ -26,7 +24,7 @@ no_chord: NC
 
 slash_chord: chord SLASH root_note
 
-time_extension: STAR number
+time_extension: STAR number | STAR number SLASH number
 
 chord: root_note (mode modifiers_no_base_size_comp | mode modifiers_base_size | mode? modifiers_add_plus)
 modifiers_add_plus: additions? suspensions? reductions?
@@ -49,17 +47,17 @@ modifier: FLAT | HASH
 
 component_number: number  // restricted to: 5, 6, 7, 9, 11
 
-additions: ADD modifier? number+
+additions: (ADD modifier? number)+
 
-suspensions: SUS ("2" | "4")
+suspensions: SUS (/2/ | /4/)
 
-reductions: NO ("3" | "5")
+reductions: (NO (/3/ | /5/))+
 
 p2_number: number     // restrict values to powers of 2 (1–256) in code
 
 number: NUMBER
 
-NUMBER: /[0-9]//[1-9]/*
+NUMBER: /[1-9]//[0-9]/*
 SLASH: "/"
 DASH: "-"
 STAR: "*"

@@ -18,33 +18,24 @@ def generate_sound(chords_and_sound_fn):
 
 
 if __name__ == '__main__':
+	_420ed69 = NToneTemperament(n=420, freq=440, ratio=69)
 	tet12 = NToneTemperament(n=12, freq=440, ratio=2)
-	aa = tet12.frequencies([-24, 0], 0)
-	print(aa.frequencies)
-	cmaj = tet12.frequencies([-21, -9, -5, -2], -21)
-	fmaj = tet12.frequencies([-16, -9, -4, 0], -16)
-	gmaj8 = tet12.frequencies([-14, -10, -7, -2], -14)
-	gmaj7 = tet12.frequencies([-14, -10, -7, -4], -14)
-	am = tet12.frequencies([-12, -9, -9, -5], -12)
-	fmaj8 = tet12.frequencies([-16, -12, -9, -4], -16)
-	fmaj6 = tet12.frequencies([-16, -12, -9, -7], -16)
-	gmaj64 = tet12.frequencies([-14, -14, -9, -5], -14)
-	gmaj53 = tet12.frequencies([-26, -16, -10, -7], -14)
-	cmajno5 = tet12.frequencies([-21, -17, -9, -9], -21)
+	tet31 = NToneTemperament(n=31, freq=440, ratio=2)
+
+	cmaj = tet31.frequencies([0, 10, 18, 31])
+	cmin = tet31.frequencies([0, 8, 18, 31])
+	cneu = tet31.frequencies([0, 9, 18, 31])
+	csmaj = tet31.frequencies([0, 11, 18, 31])
+	csmin = tet31.frequencies([0, 7, 18, 31])
 
 	inst = Instrument(Instruments.default)
 	sound_from_freq_time = time()
 	chords = [
-		(cmaj, 1),
-		(fmaj, 1),
-		(gmaj8, 0.5),
-		(gmaj7, 0.5),
-		(am, 1),
-		(fmaj8, 0.5),
-		(fmaj6, 0.5),
-		(gmaj64, 1),
-		(gmaj53, 1),
-		(cmajno5, 2)
+		(cmin, 2),
+		(cmaj, 2),
+		(cneu, 2),
+		(csmaj, 2),
+		(csmin, 2),
 	]
 
 	# with concurrent.futures.ProcessPoolExecutor() as executor:

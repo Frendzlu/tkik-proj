@@ -1,5 +1,6 @@
+from chord_notation_interpreter.Transformer import EvalExpressions
 from utils import reader
-from lark import Lark
+from lark import Lark, Token
 from error_handler import handle_errors
 
 if __name__ == "__main__":
@@ -11,7 +12,10 @@ if __name__ == "__main__":
 
     # abstract syntax tree
     ast = ccp.parse(chord_code,  on_error=handle_errors)
-    for tree in ast.children:
-        print(f"\n\n=============== {tree.data} ================")
-        print(tree.pretty())
-    # print(ast.pretty())
+    ast2 = ast.copy()
+    print(ast2.pretty())
+    print(EvalExpressions().transform(ast2).pretty())
+
+
+
+
