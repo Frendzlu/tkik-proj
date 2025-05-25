@@ -7,9 +7,6 @@ class EvalExpressions(Transformer):
 	def no_chord(self, args):
 		return {"type": "no_chord"}
 
-	# def modifiers_add_plus(self, args):
-	# 	pass
-
 	def reductions(self, args):
 		initstr = "no".join([x[0] for x in args[1::2]])
 		return "no" + initstr, {"reductions": [int(x[0]) for x in args[1::2]]}
@@ -44,12 +41,14 @@ class EvalExpressions(Transformer):
 	def root_note_modifier(self, args):
 		return args[0]
 
+	def modified_root_note(self, args):
+		return args[0] + args[1], {"root_note": args[0] + args[1]}
+
 	def root_note(self, args):
-		if len(args) > 1:
-			return args[0] + args[1], {"root_note": args[0] + args[1]}
 		return args[0][0], {"root_note": args[0][0]}
 
 	def component_modifiers(self, args):
+		# TODO: throw exception if modified component is in [1, 3]
 		modifiers = []
 		initstr = ""
 		for i in range(len(args)//2):
@@ -67,6 +66,7 @@ class EvalExpressions(Transformer):
 		return args[0]
 
 	def additions(self, args):
+		# TODO: throw exception if added component not in [2, 4, 6, 8, 9, 10, 11, 12, 13, 14]
 		adds = []
 		i = 1
 		initstr = ""
@@ -88,6 +88,7 @@ class EvalExpressions(Transformer):
 		return initstr, {"additions": adds}
 
 	def chord_base_size(self, args):
+		# TODO: throw exception if not in [7, 9, 11, 13]
 		return str(args[0]), {"base_size": int(args[0])}
 
 	def mode(self, args):
@@ -134,13 +135,14 @@ class EvalExpressions(Transformer):
 			if len(nd.get("modifiers")) == 0:
 				nd.pop("modifiers")
 
+		chrd = Chord(initstr, nd.get("root_note"), mode=nd.get("mode"), modifiers=nd.get("modifiers"))
 		return initstr, nd
 
 	# def slash_chord(self, args):
-	# 	nd = args[0]
+	# 	nd = args[0][1]
 	# 	nd["bass_note"] = args[2].get("root_note")
 	# 	nd["type"] = "slash"
-	# 	return nd
+	# 	return args[0][0] + "/"   +args[2][0], nd
 	#
 	# def chord_over_chord(self, args):
 	# 	return {

@@ -22,16 +22,19 @@ chord_over_chord: chord DASH chord
 
 no_chord: NC
 
-slash_chord: chord SLASH root_note
+slash_chord: chord SLASH (root_note | modified_root_note)
 
 time_extension: STAR number | STAR number SLASH number
 
-chord: root_note (mode modifiers_no_base_size_comp | mode modifiers_base_size | mode? modifiers_add_plus)
+chord: (modified_root_note (mode modifiers_no_base_size_comp | mode modifiers_base_size | mode? modifiers_add_plus))
+	|   (root_note (mode modifiers_no_base_size_comp | mode? modifiers_base_size | mode? modifiers_add_plus))
+
 modifiers_add_plus: additions? suspensions? reductions?
 modifiers_no_base_size_comp: component_modifiers additions? suspensions? reductions?
 modifiers_base_size: chord_base_size component_modifiers? additions? suspensions? reductions?
 
-root_note: base_note root_note_modifier?
+root_note: base_note
+modified_root_note: base_note root_note_modifier
 
 base_note: NOTES
 

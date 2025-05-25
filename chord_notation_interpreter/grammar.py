@@ -5,7 +5,7 @@ from error_handler import handle_errors
 
 if __name__ == "__main__":
     grammar = reader("./grammar.txt")
-    chord_code = reader("./invalid_cc.txt")
+    chord_code = reader("./cc.txt")
 
     # chord code parser
     ccp = Lark(rf"{grammar}", start="start", parser='lalr')
