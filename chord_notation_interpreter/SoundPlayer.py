@@ -1,4 +1,5 @@
 import time
+from time import sleep
 
 import pygame
 
@@ -14,6 +15,10 @@ class SoundPlayer:
 
 	def play(self, sounds: list[Sound], instrument):
 		for sound in sounds:
+			print(sound)
+			if type(sound) == str:
+				exec(sound)
+				continue
 			pysound = pygame.sndarray.make_sound(sound.buf)
 			pysound.play(loops=1, maxtime=int(sound.duration * 1000))
 			time.sleep(sound.duration)

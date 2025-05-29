@@ -9,7 +9,7 @@ from error_handler import handle_errors
 
 if __name__ == "__main__":
     grammar = reader("grammar.txt")
-    chord_code = reader("./cc.txt")
+    chord_code = reader("example3.txt")
 
     # chord code parser
     ccp = Lark(rf"{grammar}", start="start", parser='lalr')
@@ -35,12 +35,14 @@ if __name__ == "__main__":
         freq, duration = chords_and_sound_fn[0]
         print("Fd", freq, duration)
         sound_fn = chords_and_sound_fn[1]
+        if len(freq.chord_code) == 0:
+            return f"sleep({duration})"
         return Instrument(sound_fn).sound_from_frequencies(freq, duration)
 
     args = [(chord, Instruments.default) for chord in to_play]
     print(args)
     results = list(map(generate_sound, args))
-    print(to_play)
+    print(results)
     player = SoundPlayer(32, 48000)
     player.play(results, inst)
 
