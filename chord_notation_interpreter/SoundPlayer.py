@@ -2,7 +2,7 @@ import time
 
 import pygame
 
-from playback.Sound import Sound
+from Sound import Sound
 
 
 class SoundPlayer:

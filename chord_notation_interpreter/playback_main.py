@@ -1,14 +1,9 @@
-import random
-
-import numpy as np
-import concurrent.futures
-
 from time import time
 
-from chord_notation_interpreter.Instruments import Instruments
-from playback.Instrument import Instrument
-from playback.NToneTemperament import NToneTemperament
-from playback.SoundPlayer import SoundPlayer
+from Instruments import Instruments
+from Instrument import Instrument
+from NToneTemperament import NToneTemperament
+from SoundPlayer import SoundPlayer
 
 
 def generate_sound(chords_and_sound_fn):

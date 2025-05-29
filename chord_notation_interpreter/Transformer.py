@@ -2,7 +2,7 @@ import copy
 
 from lark import Transformer, Tree, Token
 
-from chord_notation_interpreter.Chord import Chord
+from Chord import Chord
 
 
 class EvalExpressions(Transformer):

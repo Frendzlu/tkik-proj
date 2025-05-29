@@ -1,14 +1,14 @@
-from chord_notation_interpreter.Instruments import Instruments
-from chord_notation_interpreter.Transformer import EvalExpressions
-from playback.Instrument import Instrument
-from playback.NToneTemperament import NToneTemperament
-from playback.SoundPlayer import SoundPlayer
+from Instruments import Instruments
+from Transformer import EvalExpressions
+from Instrument import Instrument
+from NToneTemperament import NToneTemperament
+from SoundPlayer import SoundPlayer
 from utils import reader
-from lark import Lark, Token
+from lark import Lark
 from error_handler import handle_errors
 
 if __name__ == "__main__":
-    grammar = reader("./grammar.txt")
+    grammar = reader("grammar.txt")
     chord_code = reader("./cc.txt")
 
     # chord code parser

@@ -1,8 +1,7 @@
-import math
 import numpy as np
 from time import time
 
-from playback.Sound import Sound
+from Sound import Sound
 
 
 class Instrument:
