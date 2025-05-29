@@ -19,7 +19,6 @@ class UI {
         let fns = this.event_to_fn_map.get(event.type)
 
         for (const fn of fns) {
-            // console.log("skajbidi", this)
             fn(event, this)
         }
     }

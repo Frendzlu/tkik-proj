@@ -8,7 +8,7 @@ const EVENTS = []
 record_events()
 
 canvas.set_size(window.innerWidth, window.innerHeight)
-handle_resize(canvas.canvasHTML)
+// handle_resize(canvas.canvasHTML)
 
 let piano_separator_display = new Display(canvas.canvasHTML.width, 5, 0, canvas.canvasHTML.height * 0.75)
 let note_display = new Display(canvas.canvasHTML.width / 2, canvas.canvasHTML.height * 0.75, 0, 0, "#DFD0B8")
