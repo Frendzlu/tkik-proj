@@ -6,29 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>chordIDE</title>
     <link rel="stylesheet" href="./static/style.css">
-    <script src="static/scripts/UI.js" defer></script>
-    <script src="static/scripts/handle_dragbar.js" defer></script>
     <script src="static/scripts/Canvas.js" defer></script>
-    <script src="static/scripts/handle_canvas_resize.js" defer></script>
-    <script src="static/scripts/init_canvas.js" defer></script>
+    <script src="static/scripts/Display.js" defer></script>
+    <script src="static/scripts/PianoDisplay.js" defer></script>
+    <script src="static/scripts/NoteDisplay.js" defer></script>
+    <script src="static/scripts/ChordCodeDisplay.js" defer></script>
+    <script src="static/scripts/dragbar_event_handler.js" defer></script>
+    <script src="static/scripts/EventRecord.js" defer></script>
+    <script src="static/scripts/UI.js" defer></script>
     <script src="static/scripts/main.js" defer></script>
 </head>
 
 <body>
-    <div class="root">
-        <div class="main-content-container">
-            <div class="left-content-container">
-                <canvas id="note-display-canvas"></canvas>
-            </div>
-            <div id="vertical-dragbar" class="vertical-dragbar"></div>
-            <div class="right-content-container">
-                <canvas id="chord-code-canvas"></canvas>
-            </div>
-        </div>
-        <div class="piano">
-            <canvas id="piano-canvas"></canvas>
-        </div>
-    </div>
+    <canvas id="root"></canvas>
 </body>
 
 </html>
