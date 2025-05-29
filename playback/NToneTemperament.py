@@ -42,6 +42,8 @@ class NToneTemperament:
 			Returns the associated Hz values for multiple relative pitches ``pitches``.\n
 			If the pitch is float, adds the decimal part as a cent scale
 		"""
+		if len(pitches) == 0:
+			return NTTFrequencyGroup(self, [], [], None)
 		if type(pitches) in [int, float, np.int8]:
 			return NTTFrequencyGroup(self, pitches, self.frequency(pitches), rootN)
 		elif type(pitches) == list:
