@@ -1,3 +1,5 @@
+import copy
+
 from lark import Transformer, Tree, Token
 
 from chord_notation_interpreter.Chord import Chord
@@ -135,21 +137,54 @@ class EvalExpressions(Transformer):
 			if len(nd.get("modifiers")) == 0:
 				nd.pop("modifiers")
 
-		chrd = Chord(initstr, nd.get("root_note"), mode=nd.get("mode"), modifiers=nd.get("modifiers"))
-		return initstr, nd
+		chrd =  Chord(initstr, nd.get("root_note"), mode=nd.get("mode"), modifiers=nd.get("modifiers"))
+		return initstr, chrd
 
-	# def slash_chord(self, args):
-	# 	nd = args[0][1]
-	# 	nd["bass_note"] = args[2].get("root_note")
-	# 	nd["type"] = "slash"
-	# 	return args[0][0] + "/"   +args[2][0], nd
-	#
-	# def chord_over_chord(self, args):
-	# 	return {
-	# 		"type": "overchord",
-	# 		"primary": args[0],
-	# 		"secondary": args[2]
-	# 	}
+	def slash_chord(self, args):
+		print(args)
+		init_str = args[0][0] + "/" + args[2][0]
+		chrd = args[0][1]
+		chrd.change_bass_note(args[2][1].get("root_note"))
+		return init_str, chrd
+
+	def chord_over_chord(self, args):
+		init_str = args[0][0] + "-" + args[2][0]
+		chrd1 = args[0][1]
+		chrd2 = args[2][1]
+		chrd2.tpose(-12)
+		chrd1.merge(chrd2)
+		return init_str, chrd1
+
+	def multi_chord(self, args):
+		if args[0] == "%":
+			return "%", args[1].get("duration")
+		print(args)
+		if "type" in args[0]:
+			return Chord("N.C", nc=True)
+		init_str, chrd = args[0]
+		dur = args[1].get("duration")
+		chrd.duration = dur
+		return chrd
+
+	def chords(self, args):
+		sch = args[0]
+		narg = []
+		for i in range(len(args)):
+			nc = args[i]
+			if isinstance(nc, tuple):
+				dur = args[i][1]
+				nc = copy.deepcopy(sch)
+				nc.duration = dur
+			narg.append(nc)
+			sch = nc
+		return "dum", narg
+
+	def measure(self, args):
+		for a in args:
+			if isinstance(a, tuple):
+				return a[1]
+
+
 
 
 
