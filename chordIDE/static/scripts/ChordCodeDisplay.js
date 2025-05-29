@@ -24,6 +24,7 @@ class ChordCodeDisplay {
                 ctx.fillStyle = "#222831"
             }
             else ctx.fillStyle = this.display.color
+            console.log(this.display.offset_x, h_step, this.display.width)
             ctx.fillRect(this.display.offset_x, i * h_step, this.display.width, h_step)
 
             if (this.line_text_map.get(i)) {
