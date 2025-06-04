@@ -7,9 +7,16 @@
 @16;
 (
     @17;
-    |  8  N.C.   C7  %  Gm7/D  C7  Edim/Bb  _  |
+    |  8  N.C.   C7  %  Gm7/D  C7  Edimb3/Bb  _  |
     @18;
-    |  8  Bbadd8-C  %  Cm7  F7/A  Badd5/F  _  N.C.  |
+    |  8  Bbaddb8-C  %  Cm7  F7/A  Badd5/F  _  N.C.  |
 ) % 12
 &15;
-|  8  Bbadd8-C  %  Cm7  F7/A  Badd5/F  _  Bbb7 Bb7 |
+|  8  Bbadd8-C  %  Cm7  F7/A  Badd5/F  _  Bbmajb7 Bbm7 |
+(
+| 4 N.C. |
+(
+| D |
+)
+| 4 C |
+)

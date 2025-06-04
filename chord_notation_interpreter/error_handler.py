@@ -12,7 +12,7 @@ def handle_errors(e):
         return True
     
     if isinstance(e, UnexpectedToken):
-        print(f'skipping token: {e.token}')
+        print(f'skipping token: {e.token} at {e.line}, {e.column}')
         return True
     print(e.token)
     return False
