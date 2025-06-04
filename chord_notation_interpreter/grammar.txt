@@ -1,4 +1,4 @@
-start: measure* measure_group+ measure* | measure*
+start: measure* (measure_group+ measure*)+ | measure*
 
 measure_group: preamble? LPAR (measure+ measure_group+ measure* | measure* measure_group+ measure+ | measure+) RPAR measure_suffix?
 

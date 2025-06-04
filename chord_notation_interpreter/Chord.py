@@ -21,9 +21,9 @@ mods = {
 class Chord:
 
 	def __str__(self) -> str:
-		return self.initial_string
+		return "<Chord>: " + self.initial_string
 
-	def __init__(self, initial_string, root_note=None, mode="maj", modifiers=None, duration=(1, 1), nc=False):
+	def __init__(self, initial_string, root_note=None, mode="maj", modifiers=None, duration=(1, 1), nc=False, chord_pos=None):
 		self.root_note = root_note
 		self.mode = mode
 		self.modifiers = modifiers
@@ -33,16 +33,14 @@ class Chord:
 		self.components = [1]
 		self.bass_note = None
 		self.nc = nc
+		self.error_stack = []
 
 		if nc is True:
 			self.chord_code = []
 			return
 
-
-		print("\nInit: " + self.initial_string)
 		if self.mode is None:
 			self.mode = "maj"
-		print("Mode: " + self.mode)
 
 		if len(root_note) > 1:
 			trt, mod = root_note[0], root_note[1]
@@ -69,14 +67,16 @@ class Chord:
 			else:
 				self.components.remove(3)
 				self.components.append(modifiers["suspend"])
-		print("Comps: " + str(self.components))
+
 		if modifiers and "reductions" in modifiers:
-			print("Reds:", modifiers["reductions"])
 			for red in modifiers["reductions"]:
 				if red in self.components:
 					self.components.remove(red)
 				else:
-					print(f"{red} not in chord!")
+					if chord_pos:
+						for p in chord_pos["reductions"]:
+							if p.value != "no" and int(p) == int(red):
+								self.error_stack.append(f"Line {p.line}, column {p.column}: no {red} to be removed!")
 				if red in self.changes:
 					del self.changes[red]
 
@@ -86,8 +86,6 @@ class Chord:
 				if m["component"] not in self.components:
 					self.components.append(m["component"])
 				self.changes[m["component"]] = m["modifier"]
-		print("Comp:", self.components)
-		print("Changes:", self.changes)
 
 		if 3 in self.components:
 			if mode == "m":
