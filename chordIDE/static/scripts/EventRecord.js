@@ -26,20 +26,8 @@ function record_events() {
     window.addEventListener("keydown", (e) => {
         EVENTS.push(new EventRecord(MOUSE, "keydown", e))
     })
+
+    window.addEventListener("keyup", (e) => {
+        EVENTS.push(new EventRecord(MOUSE, "keyup", e))
+    })
 }
-
-//  on_mouse_down() {
-
-//     }
-
-//     on_mouse_up() {
-
-//     }
-
-//     on_drag() {
-
-//     }
-
-//     on_hover() {
-
-//     }

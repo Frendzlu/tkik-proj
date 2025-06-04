@@ -15,9 +15,9 @@ let note_display = new Display(canvas.canvasHTML.width / 2, canvas.canvasHTML.he
 let chord_code_display = new Display(canvas.canvasHTML.width / 2, canvas.canvasHTML.height * 0.75, canvas.canvasHTML.width / 2, 0, "#5a3f31")
 let piano_display = new Display(canvas.canvasHTML.width, canvas.canvasHTML.height * 0.25, 0, canvas.canvasHTML.height * 0.75, "#222831")
 
-canvas.add_display(note_display)
 canvas.add_display(piano_display)
 canvas.add_display(piano_separator_display)
+// canvas.add_display(note_display)
 // canvas.add_display(chord_code_display)
 
 let cc_display = new ChordCodeDisplay(chord_code_display, 40)
@@ -25,10 +25,15 @@ let cc_display_event_map = new Map([["mousedown", [set_focused_line]], ["keydown
 let cc_display_UI = new UI(cc_display, ["mousedown", "keydown"], cc_display_event_map, [])
 canvas.add_UI_element(cc_display_UI)
 
+let nt_display = new NoteDisplay(note_display)
+let nt_display_event_map = new Map([[]])
+let nt_display_UI = new UI(nt_display, [], nt_display_event_map, [])
+canvas.add_UI_element(nt_display_UI)
 
-let dragbar_display = new Display(5, note_display.height, canvas.canvasHTML.width / 2, 0, "black")
+let dragbar_display = new Display(7, note_display.height, canvas.canvasHTML.width / 2, 0, "black")
 let dragbar_event_map = new Map([["mousedown", [handle_dragbar]], ["mouseup", [handle_dragbar]]])
 let dragbar = new UI(dragbar_display, ["mousedown", "mouseup"], dragbar_event_map, [note_display, chord_code_display])
 canvas.add_UI_element(dragbar)
 
 canvas.render()
+// window.alert("hello mr sigma, to compile your code you need to press '='")

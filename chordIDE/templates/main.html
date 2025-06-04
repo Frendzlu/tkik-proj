@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>chordIDE</title>
     <link rel="stylesheet" href="./static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vexflow@5.0.0/build/cjs/vexflow.js" defer></script>
     <script src="static/scripts/Canvas.js" defer></script>
     <script src="static/scripts/Display.js" defer></script>
     <script src="static/scripts/PianoDisplay.js" defer></script>
@@ -14,10 +15,12 @@
     <script src="static/scripts/dragbar_event_handler.js" defer></script>
     <script src="static/scripts/EventRecord.js" defer></script>
     <script src="static/scripts/UI.js" defer></script>
+    <script src="static/scripts/Net.js" defer></script>
     <script src="static/scripts/main.js" defer></script>
 </head>
 
 <body>
+    <canvas style="display: none;" id="output"></canvas>
     <canvas id="root"></canvas>
 </body>
 
