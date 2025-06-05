@@ -22,7 +22,7 @@ canvas.add_display(piano_separator_display)
 // canvas.add_display(note_display)
 // canvas.add_display(chord_code_display)
 
-let cc_display = new ChordCodeDisplay(chord_code_display, 40)
+let cc_display = new ChordCodeDisplay(chord_code_display, 30)
 let cc_display_event_map = new Map([["mousedown", [set_focused_line]], ["keydown", [input_text]]])
 let cc_display_UI = new UI(cc_display, ["mousedown", "keydown"], cc_display_event_map, [])
 canvas.add_UI_element(cc_display_UI)
