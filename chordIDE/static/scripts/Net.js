@@ -18,4 +18,25 @@ class Net {
             console.error("ayyyy, serverito responsito errorito, errorita serverita", error)
         })
     }
+
+    static playback(chord_code_string) {
+        const url = "http://localhost:5000/playback"
+        const data = {
+            content: chord_code_string,
+        }
+
+        fetch(url, {
+            method: "POST",
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (!response.ok) throw new Error("network skibidied out of sigma... :(")
+            return response.json()
+        }).then(response_data => {
+            console.log("server response: ", response_data)
+            ERROR_STACK = [... new Set(response_data.data)]
+        }).catch(error => {
+            console.error("ayyyy, serverito responsito errorito, errorita serverita", error)
+        })
+    }
 }

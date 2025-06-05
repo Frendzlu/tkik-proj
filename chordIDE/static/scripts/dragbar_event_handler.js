@@ -19,9 +19,11 @@ function handle_dragbar(event, self) {
         console.log("mousedown", self.display.width)
     }
     else if (event_type == "mouseup") {
+        if (self.focused) {
+            self.display.width -= 10
+            self.display.offset_x += 5
+        }
         self.focused = false
-        self.display.width -= 10
-        self.display.offset_x += 5
 
 
         window.removeEventListener("mousemove", self.mousemove)

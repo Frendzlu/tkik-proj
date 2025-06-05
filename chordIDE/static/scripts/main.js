@@ -5,6 +5,7 @@ const MOUSE = {
     y: 0
 }
 const EVENTS = []
+let ERROR_STACK = []
 record_events()
 
 canvas.set_size(window.innerWidth, window.innerHeight)
@@ -15,8 +16,9 @@ let note_display = new Display(canvas.canvasHTML.width / 2, canvas.canvasHTML.he
 let chord_code_display = new Display(canvas.canvasHTML.width / 2, canvas.canvasHTML.height * 0.75, canvas.canvasHTML.width / 2, 0, "#5a3f31")
 let piano_display = new Display(canvas.canvasHTML.width, canvas.canvasHTML.height * 0.25, 0, canvas.canvasHTML.height * 0.75, "#222831")
 
-canvas.add_display(piano_display)
+//piano display will be... an error display for now : )
 canvas.add_display(piano_separator_display)
+// canvas.add_display(piano_display)
 // canvas.add_display(note_display)
 // canvas.add_display(chord_code_display)
 
@@ -29,6 +31,11 @@ let nt_display = new NoteDisplay(note_display)
 let nt_display_event_map = new Map([[]])
 let nt_display_UI = new UI(nt_display, [], nt_display_event_map, [])
 canvas.add_UI_element(nt_display_UI)
+
+let err_display = new PianoDisplay(piano_display)
+let err_display_event_map = new Map([[]])
+let err_display_UI = new UI(err_display, [], err_display_event_map, [])
+canvas.add_UI_element(err_display_UI)
 
 let dragbar_display = new Display(7, note_display.height, canvas.canvasHTML.width / 2, 0, "black")
 let dragbar_event_map = new Map([["mousedown", [handle_dragbar]], ["mouseup", [handle_dragbar]]])

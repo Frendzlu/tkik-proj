@@ -103,6 +103,10 @@ function input_text(event, self) {
             self.focused_line -= 1
             self.ptr = 0
         }
+        else if (keycode == "Enter" && is_shift_active) {
+            Net.playback(self.get_chord_code())
+            return
+        }
         else if (["ArrowDown", "Enter"].includes(keycode) && self.focused_line < self.max_visible_lines - 1) {
             self.focused_line += 1
             self.ptr = 0
@@ -123,8 +127,15 @@ function input_text(event, self) {
         if (keycode.toLowerCase() == "v" && is_ctrl_active) {
             navigator.clipboard.readText().then((text) => {
                 console.log(text)
-                for (let char of text) {
-                    insert_char(self, char)
+                let split = text.split("\n")
+                for (let line of split) {
+                    for (let char of line.trim()) {
+                        insert_char(self, char)
+                    }
+                    if (self.focused_line < self.max_visible_lines - 1) {
+                        self.focused_line += 1
+                        self.ptr = 0
+                    }
                 }
             })
         }
