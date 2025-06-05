@@ -7,7 +7,7 @@ from chord_notation_interpreter.NToneTemperament import NToneTemperament
 from chord_notation_interpreter.SoundPlayer import SoundPlayer
 from chord_notation_interpreter.utils import reader
 from lark import Lark
-from chord_notation_interpreter.error_handler import handle_errors
+from chord_notation_interpreter.error_handler import ErrorHandler
 
 if __name__ == "__main__":
     grammar = reader("grammar.txt")
@@ -16,8 +16,10 @@ if __name__ == "__main__":
     # chord code parser
     ccp = Lark(rf"{grammar}", start="start", parser="lalr", propagate_positions=True)
 
+    eh = ErrorHandler()
+
     # abstract syntax tree
-    ast = ccp.parse(chord_code, on_error=handle_errors)
+    ast = ccp.parse(chord_code, on_error=eh.handle_errors)
     ast2 = ast.copy()
     print(ast2.pretty())
     ev = EvalExpressions()
@@ -62,7 +64,13 @@ def run_playback(chord_code):
     ccp = Lark(rf"{grammar}", start="start", parser="lalr", propagate_positions=True)
 
     # abstract syntax tree
-    ast = ccp.parse(chord_code, on_error=handle_errors)
+    eh = ErrorHandler()
+    ast = []
+    try:
+        ast = ccp.parse(chord_code, on_error=eh.handle_errors)
+    except Exception as e:
+        return [], eh.es
+
     ast2 = ast.copy()
     print(ast2.pretty())
     ev = EvalExpressions()
@@ -71,7 +79,12 @@ def run_playback(chord_code):
     if not set(ev.used_jump_numbers).issubset(ev.used_segno_numbers.keys()):
         ev.error_stack.append(f"Jump number mismatch")
 
+    ev.error_stack += eh.es
+
     pprint(ev.error_stack)
+
+    if len(ev.error_stack) != 0:
+        return xyz, ev.error_stack
 
     pprint(xyz)
 
